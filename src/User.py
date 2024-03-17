@@ -7,6 +7,6 @@ class User:
 
     def get_username(self) -> str:
         return self.username
-    
+        
     def get_fullname(self) -> str:
         return self.first_name + " " + self.last_name
