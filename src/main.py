@@ -8,12 +8,25 @@ app = Flask(__name__)
 sf = Salesforce(username='fouronf@curious-impala-l5jd5q.com', password='Bibou23-', security_token='OL8PmqjNwRkPyuYFQF9CNLi2')
 
 class Session:
+    """ This object will be the bridge between the Salesforce API and the local instance of the running application """
     def __init__(self) -> None:
         self.user = None
+        self.task_list = []
+        self.non_blocked = []
 
     def set_user(self, user: User):
         self.user = user
 
+    def get_username(self):
+        return self.username
+    
+    def check_credentials(self):
+        ### check credentials using api calls using the SalesForce object ###
+        pass
+
+    def get_non_blocked_ips(self):
+        return self.non_blocked
+    
 
 non_blocked = ["127.0.0.1"] # IP addresses that are not blocked
 
@@ -51,22 +64,21 @@ def empty():
 def placeholder():
     return "<h1>Placeholder</h1>"
 
-@app.route('/welcome', methods=["POST"])
+@app.route('/welcome', methods=["GET", "POST"])
 def welcome():
     if request.method == 'POST':
         username = request.form['username']
-        userPassword = request.form['password']
-        return userEmail, userPassword
+        user_password = request.form['password']
+        return username, user_password
     return render_template("welcome.html")
 
 #access api to check credentials#
 
 user1 = User("fouronf", "Fabrice", "Fouron", "fouronf@wit.edu")
-user2 = User("fabricefouron", 'fabrice', 'fouron', 'fabricefouron@gmail.com')
 
 @app.route('/todo')
 def todo_list():
-    return render_template("todo.html", task_list=[user1, user2])
+    return render_template("todo.html", task_list=[user1])
 
 #############################################
 if __name__ == '__main__':
