@@ -2,6 +2,7 @@ from flask import Flask, redirect, render_template, request, abort
 import socket
 from User import User
 from simple_salesforce import Salesforce
+from util import *
 
 
 app = Flask(__name__)
@@ -20,20 +21,17 @@ class Session:
     def get_username(self):
         return self.username
     
-    def check_credentials(self):
+    def check_credentials(self, ):
         ### check credentials using api calls using the SalesForce object ###
-        pass
+        if sf.search() is None:
+            return "User does not exist"
 
     def get_non_blocked_ips(self):
         return self.non_blocked
-    
+
+temp_user = None
 
 non_blocked = ["127.0.0.1"] # IP addresses that are not blocked
-
-def get_ip_address(url: str) -> str:
-    """ Gets the IP address of a given url """
-    ip_address = socket.gethostbyname(url)
-    return ip_address
 
 def add_ips(ip: str) -> None:
     """ Adds a given ip address in the non_blocked list """
@@ -58,7 +56,7 @@ def block_ip():
 
 @app.route("/")
 def empty():
-    return render_template("index.html")
+    return render_template("welcome.html")
 
 @app.route('/placeholder')
 def placeholder():
