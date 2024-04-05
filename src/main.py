@@ -67,6 +67,7 @@ def welcome():
     if request.method == 'POST':
         username = request.form['username']
         user_password = request.form['password']
+        # use util function to sign in
         return username, user_password
     return render_template("welcome.html")
 
