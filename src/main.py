@@ -38,14 +38,6 @@ sf = Salesforce(username='fouronf@curious-impala-l5jd5q.com', password='Bibou23-
 session = Session()
 
 
-
-##################################################
-
-
-##################################################
-
-
-
 # methods regarding the flask application for generating pages and handling them
 #############################################
 @app.before_request
@@ -58,6 +50,7 @@ def block_ip():
 @app.route("/")
 def empty():
     return render_template("task.html")
+
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
@@ -73,6 +66,7 @@ def register():
 
     return render_template("register.html")
 
+
 @app.route('/signin', methods=["GET", "POST"])
 def sign_in():
     if request.method == 'POST':
@@ -85,9 +79,6 @@ def sign_in():
             pass
         return username, user_password
     return render_template("signin.html")
-
-
-user1 = User("fouronf", "Fabrice", "Fouron", "fouronf@wit.edu")
 
 
 @app.route('/todo')
