@@ -1,11 +1,14 @@
+from Tool import Tool
+from datetime import datetime
 class Task:
 
     def __init__(self, name) -> None:
         self.id = id
+        self.name = name
         self.start_time = 0
         self.end_time = 0
         self.description = ""
-        self.tools = []
+        self.tools: Tool = None
 
     def set_start_time(self, time: int) -> None:
         self.start_time = time
@@ -18,7 +21,4 @@ class Task:
             self.tools.append(i)
 
     def __str__(self) -> str:
-        output = ""
-        for i in self.tools:
-            output += i + "\n"
-        return output
+        return self.name

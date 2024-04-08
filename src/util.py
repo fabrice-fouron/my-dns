@@ -19,14 +19,17 @@ def get_ip(url: str) -> str :
     return socket.gethostbyname(url)
 
 
-def register(username: str, password: str) -> None:
-   
-    if not already_exists(username):  # if the user already exists, avoid creating another account
+def register_user(firstname: str, lastname: str, username: str, password: str, email: str) -> None:
+
+    if already_exists(username):  # if the user already exists, avoid creating another account
         pass
     else:
         info = {
             "Name": username,
-            "Password__c": password
+            "Password__c": password,
+            "First_Name__c": firstname,
+            "Last_Name__c": firstname,
+            "Email__c": email
         }
         sf.New_User__c.create(info) # create a new user login and send to Salesforce
 
@@ -107,12 +110,11 @@ def get_todo_list(username):
     for i in json_result:
         if i['New_User__c'] == get_user_id(username):
             new_task = Task(i['Name'])
-            new_task.set
             todo_list.append(new_task)
     
-    for i in todo_list:
-        print(i)
+    return todo_list
 
+# debug method
 def main():
     contact = sf.New_User__c.get('a0BHp000015S93bMAC')
     print(get_todo_list('fabricefouron'))

@@ -3,13 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>TodoList</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #f4f4f4;
+        }
+        .container {
+          max-width: 600px;
+          margin: 20px auto;
+          padding: 20px;
+          background-color: #fff;
+          border-radius: 5px;
+          box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .task {
+          border-bottom: 1px solid #ccc;
+          padding: 10px 0;
+        }
+        h2 {
+          margin-top: 0;
+        }
+      </style>
 </head>
 <body id="container">
-    {% block body %}
-        {% for task in user_list %}
-            <h1>{{ user.get_fullname() }}</h1>
+    <!-- {% block body %}
+        {% for task in task_list %}
+            <h1>{{ task.__str__() }}</h1>
         {% endfor %}
-    {% endblock %}
+    {% endblock %} -->
+
+    <div class="container">
+        <h2>Tasks</h2>
+        {% if task_list %}
+          {% for task in task_list %}
+            <div class="task">
+              <h3>{{ task.__str__() }}</h3>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p>No tasks available.</p>
+        {% endif %}
+      </div>
 </body>
 </html>
