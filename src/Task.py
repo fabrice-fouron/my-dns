@@ -16,3 +16,9 @@ class Task:
     def set_tools(self, *args) -> None:
         for i in args:
             self.tools.append(i)
+
+    def __str__(self) -> str:
+        output = ""
+        for i in self.tools:
+            output += i + "\n"
+        return output

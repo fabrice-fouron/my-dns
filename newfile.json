@@ -1,1 +1,7 @@
-{"records": [], "totalSize": 0, "done": true}
+{'records': [OrderedDict([('attributes', OrderedDict([('type', 'User__c'), ('url', '/services/data/v57.0/sobjects/User__c/a0BHp000015S93WMAS')
+            ])), ('Name', 'fabricefouron'), ('Password__c', 'hello')
+        ])
+    ], 
+    'totalSize': 1, 
+    'done': True
+}

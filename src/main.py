@@ -3,43 +3,41 @@ import socket
 from User import User
 from simple_salesforce import Salesforce
 from util import *
+from datetime import datetime
 
 
 app = Flask(__name__)
 sf = Salesforce(username='fouronf@curious-impala-l5jd5q.com', password='Bibou23-', security_token='OL8PmqjNwRkPyuYFQF9CNLi2')
+session = None
 
 class Session:
     """ This object will be the bridge between the Salesforce API and the local instance of the running application """
+    """Assumption: you can have 1 task per timeframe"""
     def __init__(self) -> None:
-        self.user = None
-        self.task_list = []
-        self.non_blocked = []
+        self.user: User = None
+        self.task_list: list[Task] = []
+        self.non_blocked: list[str] = ["127.0.0.1"] # IP addresses that are not blocked
+        self.current_task: Task = None
 
-    def set_user(self, user: User):
+    def set_default_ips(self):
+        self.non_blocked = ["127.0.0.1"]
+
+    def set_user(self, user: User) -> None:
         self.user = user
 
-    def get_username(self):
-        return self.username
-    
-    def check_credentials(self, ):
-        ### check credentials using api calls using the SalesForce object ###
-        if sf.search() is None:
-            return "User does not exist"
+    def get_username(self) -> None:
+        return self.user.username
 
-    def get_non_blocked_ips(self):
+    def get_non_blocked_ips(self) -> None:
         return self.non_blocked
 
-temp_user = None
-
-non_blocked = ["127.0.0.1"] # IP addresses that are not blocked
-
-def add_ips(ip: str) -> None:
-    """ Adds a given ip address in the non_blocked list """
-    non_blocked.append(ip)
+    def set_current_task(self) -> None:
+        for i in self.task_list:
+            if datetime.now() < i.end_time and datetime.now() > i.start_time:
+                self.current_task = i
 
 ##################################################
 
-    
 
 ##################################################
 
@@ -58,26 +56,32 @@ def block_ip():
 def empty():
     return render_template("welcome.html")
 
-@app.route('/placeholder')
+@app.route('/register')
 def placeholder():
-    return "<h1>Placeholder</h1>"
+    return render_template("register.html")
 
-@app.route('/welcome', methods=["GET", "POST"])
-def welcome():
+@app.route('/signin', methods=["GET", "POST"])
+def sign_in():
     if request.method == 'POST':
         username = request.form['username']
         user_password = request.form['password']
         # use util function to sign in
+        if login(username, user_password):
+            session = Session()
+            session.set_user(User(username))
+        else:
+            pass
         return username, user_password
-    return render_template("welcome.html")
+    return render_template("signin.html")
 
 #access api to check credentials#
 
 user1 = User("fouronf", "Fabrice", "Fouron", "fouronf@wit.edu")
 
-@app.route('/todo')
-def todo_list():
-    return render_template("todo.html", task_list=[user1])
+@app.route('/todo/<str:user>')
+def todo_list(user):
+    # get the tasks to do
+    return render_template("todo.html", task_list=[user])
 
 #############################################
 if __name__ == '__main__':

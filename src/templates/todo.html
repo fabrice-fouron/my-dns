@@ -7,7 +7,7 @@
 </head>
 <body id="container">
     {% block body %}
-        {% for user in user_list %} 
+        {% for task in user_list %}
             <h1>{{ user.get_fullname() }}</h1>
         {% endfor %}
     {% endblock %}
